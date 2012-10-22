@@ -2,8 +2,6 @@
 
 import os
 
-from web.webapi import NotFound
-
 import config
 
 def get_dir_path(*args):
@@ -13,7 +11,7 @@ def get_dir_path(*args):
     if os.path.isdir(path):
         return path
     else:
-        NotFound()
+        raise ValueError
 
 def get_file_path(*args):
     path = config.UPLOAD_DIR
@@ -22,7 +20,7 @@ def get_file_path(*args):
     if os.path.isfile(path):
         return path
     else:
-        NotFound()
+        raise ValueError
 
 def split_url(url):
     args = url.split('/')

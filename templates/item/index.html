@@ -1,3 +1,29 @@
-<%inherit file="/main.html"/>
+<%inherit file="/base.html"/>
 
-This is body.
+<div class="row">
+	<div class="twelve columns">
+		<ul class="breadcrumbs">
+			% for (name, url) in page.breadcrumbs[:-1]:
+				<li><a href="${url}">${name}</a></li>
+			% endfor
+			<li class="current"><a href="${page.breadcrumbs[-1][1]}">${page.breadcrumbs[-1][0]}</a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="row">
+	<div class="twelve columns">
+		<div class="panel">
+			% for d in page.dirs:
+				<li><a href="/${page.relative_path}/${d}/">${d}</a></li>
+			% endfor
+		</div>
+		<div class="panel">
+			% for f in page.files:
+				<li><a href="/${page.relative_path}/${f}">${f}</a></li>
+			% endfor
+		</div>
+	</div>
+</div>
+
+## vim: set ft=mako:

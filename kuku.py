@@ -7,9 +7,9 @@ import views
 
 urls = (
     r'^/admin/$', 'views.admin.Index',
-    r'^/(\S+)/$', 'views.page.Detail',
+    r'^/(\S+)/$', 'views.item.Index',
     r'^/(\S+)$', 'views.item.Detail',
-    r'^/$', 'views.page.Detail',
+    r'^/$', 'views.item.Index',
 )
 app = web.application(urls, globals())
 

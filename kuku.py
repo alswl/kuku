@@ -6,7 +6,8 @@ import config
 import views
 
 urls = (
-    r'^/_admin/$', 'views.admin.Index',
+    r'^/_admin/login$', 'views.admin.Login',
+    r'^/_upload$', 'views.item.Upload',
     r'^/(\S+)/$', 'views.item.Index',
     r'^/(\S+)$', 'views.item.Detail',
     r'^/$', 'views.item.Index',

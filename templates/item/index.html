@@ -1,7 +1,7 @@
 <%inherit file="/base.html"/>
 
 <div class="row">
-	<div class="twelve columns">
+	<div class="ten columns">
 		<ul class="breadcrumbs">
 			% for (name, url) in page.breadcrumbs[:-1]:
 				<li><a href="${url}">${name}</a></li>
@@ -9,21 +9,33 @@
 			<li class="current"><a href="${page.breadcrumbs[-1][1]}">${page.breadcrumbs[-1][0]}</a></li>
 		</ul>
 	</div>
+	<div class="two columns">
+		##<a id="upload_btn" href="javascript:;" class=" round button">Upload</a>
+		<div id="upload_btn" class="round button">Upload</div>
+	</div>
 </div>
 
 <div class="row">
 	<div class="twelve columns">
 		<div class="panel">
 			% for d in page.dirs:
-				<li><a href="/${page.relative_path}/${d}/">${d}</a></li>
+				<li><a href="/${page.relative_path}/${d}/">${d}/</a></li>
 			% endfor
-		</div>
-		<div class="panel">
 			% for f in page.files:
 				<li><a href="/${page.relative_path}/${f}">${f}</a></li>
 			% endfor
 		</div>
 	</div>
 </div>
+
+<%block name="before_js">
+<script>
+$(function() {
+	$g.page = {};
+	$g.page.path = '${page.path}';
+	$g.page.relative_path = '${page.relative_path}';
+});
+</script>
+</%block>
 
 ## vim: set ft=mako:

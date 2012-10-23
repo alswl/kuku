@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+import re
 
 import config
 
@@ -25,3 +26,13 @@ def get_file_path(*args):
 def split_url(url):
     args = url.split('/')
     return args
+
+def secure_name(name):
+    safe_name = re.sub(r'\s+', '-', name)
+    return safe_name
+
+def secure_check_path(path):
+    if '..' in path:
+        return False
+    else:
+        return True

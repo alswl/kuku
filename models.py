@@ -12,6 +12,8 @@ class Page(object):
         self.dirs = []
         self.files = []
         self.breadcrumbs = []
+
+        self.set_dirs_files()
         self.set_breadcrumbs()
 
     def set_breadcrumbs(self):
@@ -25,13 +27,11 @@ class Page(object):
             self.breadcrumbs.append((i, parent + i + '/'))
             parent += i + '/'
 
-    @staticmethod
-    def get_dirs_files(path):
-        page = Page(path)
-        l = os.listdir(page.path)
+    def set_dirs_files(self):
+        l = os.listdir(self.path)
         for f in l:
-            if os.path.isdir(os.path.join(path, f)):
-                page.dirs.append(f)
+            if os.path.isdir(os.path.join(self.path, f)):
+                self.dirs.append(f)
             else:
-                page.files.append(f)
-        return page
+                self.files.append(f)
+        return self

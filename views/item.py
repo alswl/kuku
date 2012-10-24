@@ -29,20 +29,3 @@ class Index:
         page = Page(path)
 
         return render.item_index(page=page)
-
-class Upload:
-    def POST(self):
-        allowed_extension = [".*"]
-        size_limit = 3 * 1024 * 1024 # 3 * 1024 * 1024 bytes
-        name = web.input(qqfile=None).qqfile
-        path = web.input().path
-        data = webapi.data()
-
-        if not lib.secure_check_path(path):
-            return '{success: false}'
-        name = lib.secure_name(name)
-        file = open(os.path.join(config.UPLOAD_DIR, path, name), "wb+")
-        file.write(data)
-        file.close()
-
-        return '{success:true}'

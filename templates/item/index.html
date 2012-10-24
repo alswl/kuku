@@ -1,7 +1,7 @@
 <%inherit file="/base.html"/>
 
 <div class="row">
-	<div class="ten columns">
+	<div class="twelve columns">
 		<ul class="breadcrumbs">
 			% for (name, url) in page.breadcrumbs[:-1]:
 				<li><a href="${url}">${name}</a></li>
@@ -9,14 +9,10 @@
 			<li class="current"><a href="${page.breadcrumbs[-1][1]}">${page.breadcrumbs[-1][0]}</a></li>
 		</ul>
 	</div>
-	<div class="two columns">
-		##<a id="upload_btn" href="javascript:;" class=" round button">Upload</a>
-		<div id="upload_btn" class="round button">Upload</div>
-	</div>
 </div>
 
 <div class="row">
-	<div class="twelve columns">
+	<div class="eight columns">
 		<div class="panel">
 			% for d in page.dirs:
 				<li><a href="/${page.relative_path}/${d}/">${d}/</a></li>
@@ -26,15 +22,45 @@
 			% endfor
 		</div>
 	</div>
+	<div class="four columns">
+		<div class="panel">
+			<ul class="button-group">
+				<li><div id="upload_btn" class="button">Upload File</div></li>
+				<li><a id="mkdir_btn" class="button" href="javascript:;">Create Directory</a></li>
+			</div>
+		</div>
+	</div>
 </div>
+
+<div id="mkdir_pnl" class="reveal-modal medium">
+	<h2>Create Directory</h2>
+
+	<div class="row">
+		<div class="two columns">
+			<label class="right inline">Name: </label>
+		</div>
+		<div class="ten columns">
+			<div class="row collapse">
+				<div class="eight mobile-three columns">
+					<input type="text" placeholder="eg. travel picture" />
+				</div>
+				<div class="four mobile-one columns">
+					<a href="javascript:;" class="postfix button expand submit">Create</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
 
 <%block name="before_js">
 <script>
-$(function() {
-	$g.page = {};
-	$g.page.path = '${page.path}';
-	$g.page.relative_path = '${page.relative_path}';
-});
+	$(function() {
+		$g.page = {};
+		$g.page.path = '${page.path}';
+		$g.page.relative_path = '${page.relative_path}';
+	});
 </script>
 </%block>
 

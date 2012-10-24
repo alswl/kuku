@@ -5,11 +5,12 @@ import web
 import config
 import views
 
-re_safe_name = r'[ \w\-\.\u2e80-\u9fff]' # FIXME 中文有问题
+re_safe_name = ur'[ \w\u2e80-\u9fff\-\.\[\]]' # FIXME 中文有问题
 
 urls = (
     r'/_admin/login', 'views.admin.Login',
-    r'/_upload', 'views.item.Upload',
+    r'/_admin/upload', 'views.admin.Upload',
+    r'/_admin/mkdir', 'views.admin.Mkdir',
     r'/((?:%(name)s+/)*)' %{'name': re_safe_name}, 'views.item.Index',
     r'/((?:%(name)s+/)*)(%(name)s+)' %{'name': re_safe_name}, 'views.item.Detail',
 )

@@ -37,11 +37,11 @@ class Upload(Base):
 
 class Mkdir(Base):
     def POST(self):
-        input = web.input({path: None, name: None})
+        input = web.input(path=None, name=None)
         relative_path = input.path
-        name = input().name
+        name = input.name
         if not relative_path or not name:
-            return JsonResult.json_illegal(False) # TODO
-        os.mkdir(os.path.join(config.ROOT_DIR, path, name))
+            return JsonResult.json_illegal(False) # TODO security
 
+        os.mkdir(os.path.join(config.UPLOAD_DIR, relative_path, name))
         return JsonResult.json(True)

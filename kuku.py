@@ -5,7 +5,7 @@ import web
 import config
 import views
 
-re_safe_name = ur'[ \w\u2e80-\u9fff\-\.\[\]]' # FIXME 中文有问题
+re_safe_name = ur'[ \w\u2e80-\u9fff\-_\.\[\]]'
 
 urls = (
     r'/_admin/login', 'views.admin.Login',

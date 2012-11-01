@@ -8,9 +8,9 @@ from web import webapi
 import config
 import lib
 from models import Page
-from views import render
+from views import Base, render
 
-class Detail:        
+class Detail(Base):
     def GET(self, dir, name):
         try:
             path = lib.get_file_path(dir, name)
@@ -21,7 +21,7 @@ class Detail:
         item.close()
         return content
 
-class Index:        
+class Index(Base):
     def GET(self, path):
         path = os.path.join(config.UPLOAD_DIR, path)
         if not os.path.isdir(path):

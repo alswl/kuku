@@ -29,6 +29,11 @@ window.$g = {}; // global variable
 $(function() {
 	'use strict';
 
+	$('.hover-toggle').hover(
+		function() {$(this).find('.hover-toggle-btn').removeClass('hidden')},
+		function() {$(this).find('.hover-toggle-btn').addClass('hidden')}
+	);
+
 	var restricteduploader = new qq.FileUploaderBasic({
 		button: $('#upload_btn')[0],
 		action: '/_admin/upload',

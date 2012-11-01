@@ -1,0 +1,16 @@
+[class*="foundicon-"]:after {
+	position: relative;
+	top: -8px;
+	left: 10px;
+	color: #888;
+	font-size: 60%;
+	font-style: normal; 
+}
+
+.hidden {
+	display: none;
+}
+
+.tc {
+	text-align: center;
+}

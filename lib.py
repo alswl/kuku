@@ -34,6 +34,12 @@ def secure_name(name):
 def secure_check_path(path): # TODO more powerful
     if '..' in path:
         return False
-    if path[0] == '/':
+    if len(path) > 0 and path[0] == '/':
         return False
     return True
+
+class NotFoundError(Exception):
+    pass
+
+class IllegalValueError(Exception):
+    pass

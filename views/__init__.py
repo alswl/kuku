@@ -1,15 +1,16 @@
 # coding=utf-8
 
 import os
-try:
-    import simplejson as json
-except ImportError:
-    import json
+import json
+import mimetypes
 
 import web
 from web.contrib.template import render_mako
 
 import config
+import lib
+
+mimetypes.init()
 
 class Base(object):
     def __init__(self):
@@ -51,3 +52,17 @@ class JsonResult(object):
     @classmethod
     def json_illegal(cls, data=None, message=None):
         return cls.json(False, message='illegal parameters')
+
+def check_path(key_indexs=[], key_words={}):
+    """decorator: check path"""
+    def wrapper(func):
+        def __wrapper(*args, **kwargs):
+            need_checks = []
+            for i in key_indexs:
+                need_checks.append(args[i])
+            for path in need_checks:
+                if not lib.secure_check_path(path):
+                    return web.NotFound()
+            return func(*args, **kwargs)
+        return __wrapper
+    return wrapper

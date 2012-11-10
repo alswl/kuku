@@ -6,13 +6,14 @@ import config
 import views
 
 re_safe_name = ur'[ \w\u2e80-\u9fff\-_\.,\[\]]'
+re_safe_name2 = ur'[ \w\u2e80-\u9fff\-_\.,\[\]/]'
 
 urls = (
     r'/_admin/login', 'views.admin.Login',
     r'/_admin/upload', 'views.admin.Upload',
     r'/_admin/mkdir', 'views.admin.Mkdir',
     r'/((?:%(name)s+/)*)' %{'name': re_safe_name}, 'views.item.Index',
-    r'/((?:%(name)s+/)*)(%(name)s+)' %{'name': re_safe_name}, 'views.item.Detail',
+    r'/(%(name)s+[^/])' %{'name': re_safe_name2}, 'views.item.Detail',
 )
 app = web.application(urls, globals())
 

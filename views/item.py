@@ -1,35 +1,35 @@
 # coding=utf-8
 
 import os
-import mimetypes
+import logging
 
 import web
 from web import webapi
 
 import config
 import lib
-from models import Page
-from views import Base, render
+from models import Page, Item
+from views import Base, render, mimetypes, check_path
 
-mimetypes.init()
+logger = logging.getLogger(__name__)
 
 class Detail(Base):
-    def GET(self, dir, name):
+    @check_path(key_indexs=[1])
+    def GET(self, path):
+        web.header('Content-Type', mimetypes.guess_type(path)[0]) # FIXME
         try:
-            path = lib.get_file_path(dir, name)
-            web.header('Content-Type', mimetypes.guess_type(path)[0])
-        except ValueError:
+            item = Item(path)
+        except lib.NotFoundError:
             return webapi.NotFound()
-        item = open(path, 'r')
-        content = item.read() # TODO 直接返回优化，应该使用 nginx
-        item.close()
-        return content
+        logger.info('Need nginx cache file, path: %s' %path)
+        return item.get_content()
 
 class Index(Base):
+    @check_path(key_indexs=[1])
     def GET(self, path):
-        path = os.path.join(config.UPLOAD_DIR, path)
-        if not os.path.isdir(path):
+        try:
+            page = Page.get(path)
+        except lib.NotFoundError:
             return webapi.NotFound()
-        page = Page(path)
 
         return render.item_index(page=page)

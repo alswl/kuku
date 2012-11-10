@@ -53,7 +53,19 @@ class JsonResult(object):
     def json_illegal(cls, data=None, message=None):
         return cls.json(False, message='illegal parameters')
 
-def check_path(key_indexs=[], key_words={}):
+def require_post_params(requires=[]):
+    """decorator: check param in request"""
+    def wrapper(func):
+        def __wrapper(*args, **kwargs):
+            input = web.input()
+            for arg in requires:
+                if not input.has_key(arg):
+                    return web.BadRequest()
+            return func(*args, **kwargs)
+        return __wrapper
+    return wrapper
+
+def check_path(key_indexs=[], key_words={}, post_params={}):
     """decorator: check path"""
     def wrapper(func):
         def __wrapper(*args, **kwargs):
@@ -62,7 +74,26 @@ def check_path(key_indexs=[], key_words={}):
                 need_checks.append(args[i])
             for path in need_checks:
                 if not lib.secure_check_path(path):
-                    return web.NotFound()
+                    return web.BadRequest()
             return func(*args, **kwargs)
         return __wrapper
     return wrapper
+
+def require_login(func):
+    def wrapper(*args, **kwargs):
+        if not is_login():
+            return web.seeother('/_admin/login')
+        return func(*args, **kwargs)
+    return wrapper
+
+def is_login():
+    if web.config._session.get('is_login', False) == True:
+        return True
+    else:
+        return False
+
+def login():
+    web.config._session.is_login = True
+
+def logout():
+    web.config._session.is_login = None

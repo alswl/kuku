@@ -29,11 +29,7 @@ window.$g = {}; // global variable
 $(function() {
 	'use strict';
 
-	$('.hover-toggle').hover(
-		function() {$(this).find('.hover-toggle-btn').removeClass('hidden')},
-		function() {$(this).find('.hover-toggle-btn').addClass('hidden')}
-	);
-
+	// upload
 	var restricteduploader = new qq.FileUploaderBasic({
 		button: $('#upload_btn')[0],
 		action: '/_admin/upload',
@@ -43,13 +39,14 @@ $(function() {
 		allowedExtensions: ['jpeg', 'jpg', 'txt', '*'],
 		sizeLimit: 3 * 1024 * 1024, // 3 * 1024 * 1024 bytes
 		uploadButtonText: 'Upload',
-		onSubmit: function(id, fileName) {
+		onSubmit: function(id, fileName) { // TODO
 		},
-		onUpload: function(id, fileName) {},
-		onProgress: function(id, fileName) {},
-		onComplete: function(id, fileName, responseJson) {},
+		onUpload: function(id, fileName) {}, // TODO
+		onProgress: function(id, fileName) {}, // TODO
+		onComplete: function(id, fileName, responseJson) {}, // TODO
 	});
 
+	// mkdir
 	$('#mkdir_btn').click(function() {
 		$('#mkdir_pnl').reveal();
 	});
@@ -59,10 +56,25 @@ $(function() {
 		var name = $('#mkdir_pnl input').val();
 		$.post('/_admin/mkdir', {path: path, name: name},
 		   	function(data) {
+				window.location.reload();// TODO
+			}
+		).error(function() {
+			alert('Error'); // TODO
+		});
+		return false;
+	});
+
+	// delete
+	$('.hover-toggle').hover(
+		function() {$(this).find('.hover-toggle-btn').removeClass('hidden')},
+		function() {$(this).find('.hover-toggle-btn').addClass('hidden')}
+	);
+	$('.hover-toggle-btn').hover(function () {
+		$.post('/_admin/mkdir', {path: path, name: name},
+		   	function(data) {
 			// TODO
 			}
 		);
-		return false;
 	});
 
 });

@@ -1,0 +1,41 @@
+<%inherit file="/base.html"/>
+
+<form action="/_admin/login" method="post">
+	<div class="row">
+		<div class="six columns centered">
+			<fieldset>
+				<div class="row">
+					<div class="four mobile-one columns">
+						<label class="right inline">User name</label>
+					</div>
+					<div class="eight mobile-three columns">
+						<input type="text" name="username"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="four mobile-one columns">
+						<label class="right inline">Password</label>
+					</div>
+					<div class="eight mobile-three columns">
+						<input type="password" name="password"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="four mobile-one columns centered">
+						<input type="submit" class="button"/>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+</form>
+
+<%block name="before_js">
+<script>
+	$(function() {
+	});
+</script>
+</%block>
+
+## vim: set ft=mako:
+

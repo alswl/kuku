@@ -23,24 +23,24 @@
 			</thead>
 			<tbody>
 				% for d in page.dirs:
-				<tr class="hover-toggle">
+					<tr class="hover-toggle dir item">
 					<td><i class="foundicon-folder"></i></td>
-					<td><a href="/${page.relative_path}/${d}/">${d}/</a></td>
+					<td><a class="name" href="/${page.relative_path}/${d}/">${d}/</a></td>
 					<td></td>
 					<td></td>
 					<td class="tc">
-						<a href="javascript:;" class="hidden hover-toggle-btn"><i class="foundicon-trash"></i></a>
+						<a href="javascript:;" class="hidden hover-toggle-btn"><i class="foundicon-trash">delete</i></a>
 					</td>
 				</tr>
 				% endfor
 				% for f in page.files:
-				<tr class="hover-toggle">
+				<tr class="hover-toggle item file">
 					<td><i class="foundicon-page"></i></td>
-					<td><a href="/${page.relative_path}/${f}">${f}</a></td>
+					<td><a class="name" href="/${page.relative_path}/${f}">${f}</a></td>
 					<td></td>
 					<td></td>
 					<td class="tc">
-						<a href="javascript:;" class="hidden hover-toggle-btn"><i class="foundicon-trash"></i></a>
+						<a href="javascript:;" class="hidden hover-toggle-btn tc"><i class="foundicon-trash">delete</i></a>
 					</td>
 				</tr>
 				% endfor

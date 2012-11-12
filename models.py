@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import os
+import shutil
 
 import config
 import lib
@@ -83,3 +84,13 @@ class Item(object):
         file = open(os.path.join(config.UPLOAD_DIR, dir_path, name), "wb+")
         file.write(data)
         file.close()
+    @classmethod
+
+    def delete(cls, dir_path, name):
+        path = os.path.join(config.UPLOAD_DIR, dir_path, name)
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
+        else:
+            raise lib.IllegalValueError()

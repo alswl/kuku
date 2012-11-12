@@ -71,10 +71,10 @@ $(function() {
 		function() {$(this).find('.hover-toggle-btn').removeClass('hidden')},
 		function() {$(this).find('.hover-toggle-btn').addClass('hidden')}
 	);
-	$('.hover-toggle-btn').hover(function () {
-		$.post('/_admin/mkdir', {path: path, name: name},
+	$('.hover-toggle-btn').click(function () {
+		$.post('/_admin/delete', {path: $g.page.path, name: $(this).parents('.item').find('.name').html()},
 		   	function(data) {
-			// TODO
+				window.location.reload();
 			}
 		);
 	});

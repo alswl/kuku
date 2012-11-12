@@ -76,3 +76,17 @@ class Upload(Base):
 
         return JsonResult.json(True)
 
+class Delete(Base):
+    @require_login
+    @check_path(post_params=['path'])
+    @require_post_params('path', 'name')
+    def POST(self):
+        path = web.input().path
+        name = web.input().name
+        try:
+            Item.delete(path, name)
+        except lib.IllegalValueError:
+            return JsonResult.json(False)
+
+        return JsonResult.json(True)
+

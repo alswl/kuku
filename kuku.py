@@ -13,6 +13,7 @@ urls = (
     r'/_admin/logout', 'views.admin.Logout',
     r'/_admin/upload', 'views.admin.Upload',
     r'/_admin/mkdir', 'views.admin.Mkdir',
+    r'/_admin/delete', 'views.admin.Delete',
     r'/((?:%(name)s+/)*)' %{'name': re_safe_name}, 'views.item.Index',
     r'/(%(name)s+[^/])' %{'name': re_safe_name2}, 'views.item.Detail',
 )

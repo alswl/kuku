@@ -33,17 +33,19 @@ $(function() {
 	var restricteduploader = new qq.FileUploaderBasic({
 		button: $('#upload_btn')[0],
 		action: '/_admin/upload',
-		params: {'path': $g.page.relative_path},
+		params: {'path': $g.page.path},
 		debug: true,
 		multiple: true,
-		allowedExtensions: ['jpeg', 'jpg', 'txt', '*'],
+		allowedExtensions: ['jpeg', 'jpg', 'txt', 'png'],
 		sizeLimit: 3 * 1024 * 1024, // 3 * 1024 * 1024 bytes
 		uploadButtonText: 'Upload',
 		onSubmit: function(id, fileName) { // TODO
 		},
 		onUpload: function(id, fileName) {}, // TODO
 		onProgress: function(id, fileName) {}, // TODO
-		onComplete: function(id, fileName, responseJson) {}, // TODO
+		onComplete: function(id, fileName, responseJson) {
+			window.location.reload(); // TODO
+		},
 	});
 
 	// mkdir

@@ -53,15 +53,15 @@ class JsonResult(object):
     def json_illegal(cls, data=None, message=None):
         return cls.json(False, message='illegal parameters')
 
-def require_post_params(requires=[]):
+def require_post_params(*args):
     """decorator: check param in request"""
     def wrapper(func):
-        def __wrapper(*args, **kwargs):
+        def __wrapper(*fun_args, **kwargs):
             input = web.input()
-            for arg in requires:
+            for arg in args:
                 if not input.has_key(arg):
                     return web.BadRequest()
-            return func(*args, **kwargs)
+            return func(*fun_args, **kwargs)
         return __wrapper
     return wrapper
 

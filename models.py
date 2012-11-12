@@ -68,3 +68,18 @@ class Item(object):
         self.content = f.read()
         f.close()
         return self.content
+
+    @classmethod
+    def upload(cls, dir_path, name, data):
+        _, extension = os.path.splitext(name)
+        if len(extension) <= 1:
+            raise lib.IllegalValueError()
+        if not extension[1:] in config.ALLOWD_EXTENSIONS:
+            raise lib.IllegalValueError()
+        if len(data) > config.MAX_FILE_SIZE:
+            raise lib.IllegalValueError()
+
+        name = lib.secure_name(name)
+        file = open(os.path.join(config.UPLOAD_DIR, dir_path, name), "wb+")
+        file.write(data)
+        file.close()

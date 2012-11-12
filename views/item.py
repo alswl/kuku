@@ -9,14 +9,15 @@ from web import webapi
 import config
 import lib
 from models import Page, Item
-from views import Base, render, mimetypes, check_path, require_login
+from views import Base, render, JsonResult
+from views import check_path, require_post_params, require_login
 
 logger = logging.getLogger(__name__)
 
 class Detail(Base):
     @check_path(key_indexs=[1])
     def GET(self, path):
-        web.header('Content-Type', mimetypes.guess_type(path)[0]) # FIXME
+        web.header('Content-Type', mimetypes.guess_type(path)[0]) # TODO
         try:
             item = Item(path)
         except lib.NotFoundError:

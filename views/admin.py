@@ -7,39 +7,18 @@ from web import webapi
 
 import config
 import lib
+from models import Item
 import views
 from views import Base, render, JsonResult
-from views import check_path, require_post_params
-from kuku import session
+from views import check_path, require_post_params, require_login
 
 class Index(Base):
     def GET(self):
         return render.foundation()
 
-class Upload(Base):
-    def POST(self):
-        name = web.input(qqfile=None).qqfile
-        path = web.input(path=None).path # TODO 做统一校验
-        data = webapi.data()
-        if name is None or path is None or data is None:
-            return JsonResult.json(False, message='Parameter error')
-        if not lib.secure_check_path(path):
-            return JsonResult.json(False)
-        _, extension = os.path.splitext(name)
-        if len(extension) > 1 and \
-           not extension[1:] in config.ALLOWD_EXTENSIONS:
-            return JsonResult.json(False, message='Not allowed extension')
-        if len(data) > config.MAX_FILE_SIZE:
-            return JsonResult.json(False, message='File too large')
-
-        name = lib.secure_name(name)
-        file = open(os.path.join(config.UPLOAD_DIR, path, name), "wb+")
-        file.write(data)
-        file.close()
-        return JsonResult.json(True)
-
 class Mkdir(Base):
-    @require_post_params(['path', 'name'])
+    @require_login
+    @require_post_params('path', 'name')
     def POST(self):
         input = web.input()
         relative_path = input.path
@@ -62,7 +41,7 @@ class Login(Base):
             return web.seeother('/')
         return render.admin_login()
 
-    @require_post_params(['username', 'password'])
+    @require_post_params('username', 'password')
     def POST(self):
         input = web.input()
         if input.username == config.ADMIN and input.password == config.PASSWORD:
@@ -70,6 +49,7 @@ class Login(Base):
         return web.seeother('/')
 
 class Logout(Base):
+    @require_login
     def GET(self):
         input = web.input(next=None)
         next = input.next
@@ -78,3 +58,21 @@ class Logout(Base):
         if next:
             return web.seeother(next)
         return web.seeother('/')
+
+class Upload(Base):
+    @require_login
+    @check_path(post_params=['path'])
+    @require_post_params('qqfile', 'path')
+    def POST(self):
+        name = web.input().qqfile
+        path = web.input().path
+        data = webapi.data()
+        if data is None:
+            return web.BadRequest()
+        try:
+            Item.upload(path, name, data)
+        except lib.IllegalValueError:
+            return JsonResult.json(False)
+
+        return JsonResult.json(True)
+

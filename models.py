@@ -21,7 +21,7 @@ class Page(object):
         self.set_breadcrumbs()
 
     def set_breadcrumbs(self):
-        self.relative_path = os.path.relpath(self.path, config.UPLOAD_DIR)
+        self.relative_path = os.path.relpath(self.path, self.UPLOAD_DIR)
         l = self.relative_path.split('/')
         parent = '/'
         self.breadcrumbs.append(('HOME', parent))
@@ -45,7 +45,7 @@ class Page(object):
         path = os.path.join(cls.BASE_PATH, relative_path)
         if not os.path.isdir(path):
             raise lib.NotFoundError
-        return Page(path)
+        return cls(path)
 
 class Item(object):
 
@@ -81,13 +81,13 @@ class Item(object):
             raise lib.IllegalValueError()
 
         name = lib.secure_name(name)
-        file = open(os.path.join(config.UPLOAD_DIR, dir_path, name), "wb+")
+        file = open(os.path.join(cls.BASE_PATH, dir_path, name), "wb+")
         file.write(data)
         file.close()
-    @classmethod
 
+    @classmethod
     def delete(cls, dir_path, name):
-        path = os.path.join(config.UPLOAD_DIR, dir_path, name)
+        path = os.path.join(cls.BASE_PATH, dir_path, name)
         if os.path.isfile(path):
             os.remove(path)
         elif os.path.isdir(path):

@@ -21,7 +21,7 @@ class Page(object):
         self.set_breadcrumbs()
 
     def set_breadcrumbs(self):
-        self.relative_path = os.path.relpath(self.path, self.UPLOAD_DIR)
+        self.relative_path = os.path.relpath(self.path, self.BASE_PATH)
         l = self.relative_path.split('/')
         parent = '/'
         self.breadcrumbs.append(('HOME', parent))

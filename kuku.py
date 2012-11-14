@@ -18,6 +18,7 @@ urls = (
     r'/(%(name)s+[^/])' %{'name': re_safe_name2}, 'views.item.Detail',
 )
 app = web.application(urls, globals())
+application = app.wsgifunc()
 
 if web.config.get('_session') is None:
     session = web.session.Session(app, web.session.DiskStore('sessions'), {})

@@ -36,7 +36,7 @@ class Mkdir(Base):
 
 class Login(Base):
     def GET(self):
-        # TODO post login messages
+        # TODO get login messages
         if views.is_login():
             return web.seeother('/')
         return render.admin_login()
@@ -46,6 +46,9 @@ class Login(Base):
         input = web.input()
         if input.username == config.ADMIN and input.password == config.PASSWORD:
             views.login()
+        else:
+            # TODO add messages
+            return web.seeother('/_admin/login')
         return web.seeother('/')
 
 class Logout(Base):

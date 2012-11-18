@@ -12,22 +12,60 @@
 </div>
 
 <div class="row">
-	<div class="eight columns">
-		<div class="panel">
-			% for d in page.dirs:
-				<li><a href="/${page.relative_path}/${d}/">${d}/</a></li>
-			% endfor
-			% for f in page.files:
-				<li><a href="/${page.relative_path}/${f}">${f}</a></li>
-			% endfor
-		</div>
+	<div class="ten columns">
+		<table class="twelve">
+			<thead>
+				<th></th>
+				<th>File Name</th>
+				<th>Size</th>
+				<th>Last Modified Time</th>
+				<th class="tc">Delete</th>
+			</thead>
+			<tbody>
+				% for d in page.dirs:
+					<tr class="hover-toggle dir item">
+					<td><i class="foundicon-folder"></i></td>
+					<td><a class="name" href="/${page.relative_path}/${d}/">${d}/</a></td>
+					<td></td>
+					<td></td>
+					<td class="tc">
+						<a href="javascript:;" class="hidden hover-toggle-btn"><i class="foundicon-trash">delete</i></a>
+					</td>
+				</tr>
+				% endfor
+				% for f in page.files:
+				<tr class="hover-toggle item file">
+					<td><i class="foundicon-page"></i></td>
+					<td><a class="name" href="/${page.relative_path}/${f}">${f}</a></td>
+					<td></td>
+					<td></td>
+					<td class="tc">
+						<a href="javascript:;" class="hidden hover-toggle-btn tc"><i class="foundicon-trash">delete</i></a>
+					</td>
+				</tr>
+				% endfor
+			</tbody>
+		</table>
 	</div>
-	<div class="four columns">
+	<div class="two columns">
 		<div class="panel">
-			<ul class="button-group">
-				<li><div id="upload_btn" class="button">Upload File</div></li>
-				<li><a id="mkdir_btn" class="button" href="javascript:;">Create Directory</a></li>
-			</div>
+			<ul class="nav-bar vertical">
+				<li>
+					<a id="upload_btn" href="javascript:;" class="tc" title="Upload files">
+						<i class="foundicon-page"></i>
+					</a>
+				</li>
+				<li>
+					<a id="mkdir_btn" href="javascript:;" class="tc" title="Create directory">
+						<i class="foundicon-folder"></i>
+					</a>
+				</li>
+				<li>
+					<a href="/_admin/logout" class="tc" title="Logout">
+						<i class="foundicon-error"></i>
+					</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>
@@ -58,8 +96,7 @@
 <script>
 	$(function() {
 		$g.page = {};
-		$g.page.path = '${page.path}';
-		$g.page.relative_path = '${page.relative_path}';
+		$g.page.path = '${page.relative_path}';
 	});
 </script>
 </%block>

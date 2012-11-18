@@ -7,31 +7,89 @@ from web import webapi
 
 import config
 import lib
-from views import render, JsonResult
+from models import Item
+import views
+from views import Base, render, JsonResult
+from views import check_path, require_post_params, require_login
 
-class Index:
+class Index(Base):
     def GET(self):
         return render.foundation()
 
-class Upload:
+class Mkdir(Base):
+    @require_login
+    @require_post_params('path', 'name')
     def POST(self):
-        allowed_extension = [".*"]
-        size_limit = 3 * 1024 * 1024 # 3 * 1024 * 1024 bytes
-        name = web.input(qqfile=None).qqfile
-        path = web.input(path=None).path
-        data = webapi.data()
-        if name is None or path is None or data is None:
-            return JsonResult.json(False, message="Parameter error")
-        if not lib.secure_check_path(path):
-            return JsonResult.json(False)
+        input = web.input()
+        relative_path = input.path
+        name = input.name
+        if not lib.secure_check_path(relative_path):
+            return web.BadRequest()
 
-        name = lib.secure_name(name)
-        file = open(os.path.join(config.UPLOAD_DIR, path, name), "wb+")
-        file.write(data)
-        file.close()
+        path = os.path.join(config.UPLOAD_DIR, relative_path, name)
+        if os.path.isfile(path):
+            return web.BadRequest()
+        if os.path.isdir(path):
+            return web.BadRequest()
+        os.mkdir(path)
+        return JsonResult.json(True)
+
+class Login(Base):
+    def GET(self):
+        # TODO get login messages
+        if views.is_login():
+            return web.seeother('/')
+        return render.admin_login()
+
+    @require_post_params('username', 'password')
+    def POST(self):
+        input = web.input()
+        if input.username == config.ADMIN and input.password == config.PASSWORD:
+            views.login()
+        else:
+            # TODO add messages
+            return web.seeother('/_admin/login')
+        return web.seeother('/')
+
+class Logout(Base):
+    @require_login
+    def GET(self):
+        input = web.input(next=None)
+        next = input.next
+        views.logout()
+
+        if next:
+            return web.seeother(next)
+        return web.seeother('/')
+
+class Upload(Base):
+    @require_login
+    @check_path(post_params=['path'])
+    @require_post_params('qqfile', 'path')
+    def POST(self):
+        name = web.input().qqfile
+        path = web.input().path
+        data = webapi.data()
+        if data is None:
+            return web.BadRequest()
+        try:
+            Item.upload(path, name, data)
+        except lib.IllegalValueError:
+            return JsonResult.json(False)
 
         return JsonResult.json(True)
 
-class Mkdir:
+class Delete(Base):
+    @require_login
+    @check_path(post_params=['path'])
+    @require_post_params('path', 'name')
     def POST(self):
-        return JsonResult.json(False, message="need implement") ## change json to decorator
+        path = web.input().path
+        name = web.input().name
+        try:
+            Item.delete(path, name)
+        except lib.IllegalValueError:
+            return JsonResult.json(False)
+
+        return JsonResult.json(True)
+

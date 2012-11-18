@@ -31,8 +31,15 @@ def secure_name(name):
     safe_name = re.sub(r'\s+', '-', name)
     return safe_name
 
-def secure_check_path(path):
+def secure_check_path(path): # TODO more powerful
     if '..' in path:
         return False
-    else:
-        return True
+    if len(path) > 0 and path[0] == '/':
+        return False
+    return True
+
+class NotFoundError(Exception):
+    pass
+
+class IllegalValueError(Exception):
+    pass

@@ -1,5 +1,7 @@
 # coding=utf-8
 
+import os
+
 import web
 
 import config
@@ -20,7 +22,8 @@ app = web.application(urls, globals())
 application = app.wsgifunc()
 
 if web.config.get('_session') is None:
-    session = web.session.Session(app, web.session.DiskStore('sessions'), {})
+    session = web.session.Session(app, web.session.DiskStore(
+        os.path.join(config.ROOT_DIR, '..', 'sessions')), {})
     web.config._session = session
 else:
     session = web.config._session

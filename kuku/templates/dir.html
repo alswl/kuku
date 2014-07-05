@@ -1,27 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-  <meta charset="UTF-8">
-  <title></title>
+<head>
+  <title>Kuku</title>
+  <link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css">
 </head>
 <body>
 
-<ul>
-  {% if parent_dir %}
-  <li><a href="/{{ parent_dir }}/">..</a></li>
-  {% end %}
-  {% for dir in dirs %}
-    <li><a href="./{{ dir }}/">{{ dir }}</a>/</li>
-  {% end %}
 
-</ul>
+<div class="container">
 
-<ul>
-  {% for file in files %}
-  <li><a href="./{{ file }}">{{ file }}</a></li>
-  {% end %}
+  <div class="row">
+    <div class="col-md-6">
 
-</ul>
+
+      <form role="form">
+        <select id="selector" multiple="multiple" style="width: 100%; height: 480px">
+          {% if parent_dir is not None %}
+          <option value=".." data-type="dir">..</option>
+          {% end %}
+          {% for dir in dirs %}
+          <option value="./{{ dir }}/" data-type="dir">{{ dir }}/</option>
+          {% end %}
+          {% for file in files %}
+          <option value="./{{ file }}" data-name="{{ file }}" data-type="file" data-filetype="{{ file_types[file] }}">{{ file }}</option>
+          {% end %}
+        </select>
+
+      </form>
+
+    </div>
+
+    <div id="preview" class="col-md-6">
+      Preview
+    </div>
+  </div>
+
+
+</div>
 
 </body>
+<script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/underscore.js/1.6.0/underscore-min.js"></script>
+<script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script>
+  $(function() {
+    $('#selector option').click(function() {
+      var self = $(this);
+      console.info(self.attr('data-filetype'));
+      if (self.attr('data-type') === 'file' && _.contains(['image/jpeg', 'image/png'], self.attr('data-filetype'))) {
+        $('#preview').html('<img class="img-thumbnail" src="' + self.val() + '" alt="' + self.attr('data-name') + '"/>');
+      } else if (self.attr('data-type') === 'dir') {
+        window.location = self.val();
+      } else {
+        $('#preview').html('content type not support preview');
+      }
+    });
+
+    $('#selector option').dblclick(function() {
+      var self = $(this);
+      if (self.attr('data-type') === 'file' && _.contains(['image/jpeg', 'image/png'], self.attr('data-filetype'))) {
+        window.open(self.val(), 'window name', 'window settings');
+      } else if (self.attr('data-type') === 'dir') {
+        return false;
+      } else {
+        return false;
+      }
+    });
+  });
+</script>
 </html>

@@ -11,7 +11,7 @@ from kuku.handlers import dir
 from kuku import settings
 
 
-re_safe_name_with_slash = ur'[ \w\u2e80-\u9fff\-_\.,/]'
+re_safe_name_with_slash = ur'[ \w\u2e80-\u9fff\-_\.,%/]'
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -20,8 +20,8 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 route = [
-    (r'/_admin/login', MainHandler),  # TODO
-    (r'/_admin/logout', MainHandler),  # TODO
+    #(r'/_admin/login', MainHandler),  # TODO
+    #(r'/_admin/logout', MainHandler),  # TODO
     (r'/_api/upload', MainHandler),  # TODO
     (r'/_api/mkdir', MainHandler),  # TODO
     (r'/_api/delete', MainHandler),  # TODO

@@ -16,12 +16,11 @@ class MainHandler(tornado.web.RequestHandler):
 
 
 route = [
-    (r'/_admin/', MainHandler),
-    (r'/_admin/login', MainHandler),
-    (r'/_admin/logout', MainHandler),
-    (r'/_admin/upload', MainHandler),
-    (r'/_admin/mkdir', MainHandler),
-    (r'/_admin/delete', MainHandler),
+    (r'/_admin/login', MainHandler),  # TODO
+    (r'/_admin/logout', MainHandler),  # TODO
+    (r'/_api/upload', MainHandler),  # TODO
+    (r'/_api/mkdir', MainHandler),  # TODO
+    (r'/_api/delete', MainHandler),  # TODO
     (r'/()', dir.DirHandler),
     (r'/(%s+)/' % re_safe_name_with_slash, dir.DirHandler),
     (r'/(%s+)' % re_safe_name_with_slash, tornado.web.StaticFileHandler, {'path': settings.UPLOAD_PATH}),

@@ -4,8 +4,7 @@ import os
 
 DEBUG = True
 
-ADMIN = 'alswl'
-PASSWORD = '123456'
+ACCOUNTS = [('alswl', '123456'), ('admin', 'admin888')]
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 TEMPLATE_PATH = os.path.abspath(os.path.join(ROOT_PATH, 'templates'))

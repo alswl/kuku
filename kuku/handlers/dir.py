@@ -5,7 +5,8 @@ import os
 import tornado.ioloop
 import tornado.web
 
-import settings
+from kuku import settings
+from kuku.handlers import decorators
 
 
 def is_in_upload(path):
@@ -19,6 +20,7 @@ def is_security_path(path):
 
 class DirHandler(tornado.web.RequestHandler):
 
+    @decorators.require_basic_auth
     def get(self, path):
         if not is_security_path(path):
             raise tornado.web.HTTPError(404)

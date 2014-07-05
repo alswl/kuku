@@ -1,10 +1,14 @@
 # coding=utf-8
 
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(__file__, os.path.pardir, os.path.pardir)))
+
 import tornado.ioloop
 import tornado.web
 
-from handlers import dir
-import settings
+from kuku.handlers import dir
+from kuku import settings
 
 
 re_safe_name_with_slash = ur'[ \w\u2e80-\u9fff\-_\.,/]'
@@ -26,7 +30,7 @@ route = [
     (r'/(%s+)' % re_safe_name_with_slash, tornado.web.StaticFileHandler, {'path': settings.UPLOAD_PATH}),
 ]
 
-application = tornado.web.Application(route, template_path=settings.TEMPLATE_PATH)
+application = tornado.web.Application(route, template_path=settings.TEMPLATE_PATH, debug=settings.DEBUG)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(__file__, os.path.pardir, os.pat
 import tornado.ioloop
 import tornado.web
 
-from kuku.handlers import dir
+from kuku.handlers import dir, api
 from kuku import settings
 
 
@@ -23,8 +23,8 @@ route = [
     #(r'/_admin/login', MainHandler),  # TODO
     #(r'/_admin/logout', MainHandler),  # TODO
     (r'/_api/upload', MainHandler),  # TODO
-    (r'/_api/mkdir', MainHandler),  # TODO
-    (r'/_api/delete', MainHandler),  # TODO
+    (r'/_api/mkdir', api.MkdirHandler),
+    (r'/_api/delete', api.DeleteHandler),
     (r'/()', dir.DirHandler),
     (r'/(%s+)/' % re_safe_name_with_slash, dir.DirHandler),
     (r'/(%s+)' % re_safe_name_with_slash, tornado.web.StaticFileHandler, {'path': settings.UPLOAD_PATH}),
@@ -42,5 +42,5 @@ if __name__ == "__main__":
 | |\  \ |_| | |\  \ |_| |
 \_| \_/\__,_\_| \_/\__,_|
     """
-    application.listen(8888)
+    application.listen(settings.PORT, settings.ADDRESS)
     tornado.ioloop.IOLoop.instance().start()

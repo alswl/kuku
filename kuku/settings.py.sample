@@ -3,6 +3,8 @@
 import os
 
 DEBUG = True
+ADDRESS = '127.0.0.1'
+PORT = 8888
 
 ACCOUNTS = [('alswl', '123456'), ('admin', 'admin888')]
 

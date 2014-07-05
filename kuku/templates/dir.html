@@ -12,17 +12,20 @@
   <div class="row">
     <div class="col-md-6">
 
-
       <form role="form">
-        <select id="selector" multiple="multiple" style="width: 100%; height: 480px">
-          {% if parent_dir is not None %}
-          <option value=".." data-type="dir">..</option>
+
+        <input id="parent_dir" type="hidden" value="{{ parent_dir }}"/>
+        <input id="current_dir" type="hidden" value="{{ current_dir }}"/>
+
+        <select id="selector" multiple="multiple" autofocus="autofocus" style="width: 100%; height: 480px">
+          {% if current_dir != '' %}
+          <option value=".." data-url="../" data-type="dir">..</option>
           {% end %}
-          {% for dir in dirs %}
-          <option value="./{{ dir }}/" data-type="dir">{{ dir }}/</option>
+          {% for name, property in dirs.items() %}
+          <option value="{{ name }}" data-url="./{{ name }}/" data-type="dir">{{ name }}/</option>
           {% end %}
-          {% for file in files %}
-          <option value="./{{ file }}" data-name="{{ file }}" data-type="file" data-filetype="{{ file_types[file] }}">{{ file }}</option>
+          {% for name, property in files.items() %}
+          <option value="{{ name }}" data-url="./{{ name }}" data-type="file" data-mime="{{ property['mime'] }}">{{ name }}</option>
           {% end %}
         </select>
 
@@ -44,24 +47,59 @@
 <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script>
   $(function() {
-    $('#selector option').click(function() {
-      var self = $(this);
-      console.info(self.attr('data-filetype'));
-      if (self.attr('data-type') === 'file' && _.contains(['image/jpeg', 'image/png'], self.attr('data-filetype'))) {
-        $('#preview').html('<img class="img-thumbnail" src="' + self.val() + '" alt="' + self.attr('data-name') + '"/>');
-      } else if (self.attr('data-type') === 'dir') {
-        window.location = self.val();
+    var VALIDATED_MIMES = ['image/jpeg', 'image/png'];
+
+    // View
+    $('#selector').change(function() {
+      var self = $(this).children(':selected');
+      if (self.attr('data-type') === 'file' && _.contains(VALIDATED_MIMES, self.attr('data-mime'))) {
+        $('#preview').html(
+                        '<img class="img-thumbnail" src="' + self.attr('data-url') + '" alt="' + self.val() + '"/>');
       } else {
         $('#preview').html('content type not support preview');
+      }
+    });
+
+    $('#selector').keyup(function(event) {
+      var self = $(this).children(':selected');
+
+      if (event.key == 'Enter') {  // Enter
+        if (self.attr('data-type') === 'file' && _.contains(VALIDATED_MIMES, self.attr('data-mime'))) {
+          window.open(self.attr('data-url'), 'window name', 'window settings');
+        } else if (self.attr('data-type') === 'dir') {
+          window.location = self.attr('data-url');
+        } else {
+          return
+        }
+
+      } else if (event.key === 'd') {  // Delete
+        var isConfirm = confirm('Delete' + self.val());
+        if (!isConfirm) return false;
+        $.post('/_api/delete', {'path': '/' + ($('#current_dir').val() == '' ? '' : $('#current_dir').val() + '/') + self.val()}).done(function(data) {
+          window.location.reload();
+        }).fail(function(data) {
+          alert('fail' + response.responseText);
+        });
+        return false;
+
+      } else if (event.key === 'N') { // Mkdir
+        var name = prompt('Dir name?');
+        if (name === null) return false;
+        $.post('/_api/mkdir', {'path': '/' + ($('#current_dir').val() == '' ? '' : $('#current_dir').val() + '/') + name}).done(function(data) {
+          window.location.reload();
+        }).fail(function(response) {
+          alert('fail' + response.responseText);
+        });
+        return false;
       }
     });
 
     $('#selector option').dblclick(function() {
       var self = $(this);
       if (self.attr('data-type') === 'file' && _.contains(['image/jpeg', 'image/png'], self.attr('data-filetype'))) {
-        window.open(self.val(), 'window name', 'window settings');
+        window.open(self.attr('data-url'), 'window name', 'window settings');
       } else if (self.attr('data-type') === 'dir') {
-        return false;
+        window.location = self.attr('data-url');
       } else {
         return false;
       }

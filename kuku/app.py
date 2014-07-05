@@ -3,7 +3,7 @@
 import tornado.ioloop
 import tornado.web
 
-from handlers import dir, file
+from handlers import dir
 import settings
 
 
@@ -15,7 +15,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("Hello, world")
 
 
-application = tornado.web.Application([
+route = [
     (r'/_admin/', MainHandler),
     (r'/_admin/login', MainHandler),
     (r'/_admin/logout', MainHandler),
@@ -23,9 +23,11 @@ application = tornado.web.Application([
     (r'/_admin/mkdir', MainHandler),
     (r'/_admin/delete', MainHandler),
     (r'/()', dir.DirHandler),
-    (r'/(%s+/)' % re_safe_name_with_slash, dir.DirHandler),
+    (r'/(%s+)/' % re_safe_name_with_slash, dir.DirHandler),
     (r'/(%s+)' % re_safe_name_with_slash, tornado.web.StaticFileHandler, {'path': settings.UPLOAD_PATH}),
-])
+]
+
+application = tornado.web.Application(route, template_path=settings.TEMPLATE_PATH)
 
 
 if __name__ == "__main__":

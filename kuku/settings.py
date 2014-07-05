@@ -8,7 +8,7 @@ ADMIN = 'alswl'
 PASSWORD = '123456'
 
 ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
-TEMPLATES_PATH = os.path.abspath(os.path.join(ROOT_PATH, 'templates'))
+TEMPLATE_PATH = os.path.abspath(os.path.join(ROOT_PATH, 'templates'))
 UPLOAD_PATH = os.path.abspath(os.path.join(ROOT_PATH, '..', 'upload'))
 
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 3 * 1024 * 1024 bytes

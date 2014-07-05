@@ -2,3 +2,4 @@ web.py==0.37
 Mako==0.7.2
 Paste==1.7.5.1
 nose==1.2.1
+Tornado=3.2.2

@@ -15,7 +15,7 @@ UPLOAD_PATH = os.path.abspath(os.path.join(ROOT_PATH, '..', 'upload'))
 MAX_FILE_SIZE = 5 * 1024 * 1024  # 3 * 1024 * 1024 bytes
 ALLOWED_EXTENSIONS = ['jpg', 'png', 'gif', 'zip', 'rar', 'gz']
 
-
+CDN_DOMAIN = 'htpp://upload-log4d.qiniudn.com'  # TODO
 
 #DEFAULT_DIR_MODE = '755'
 #DEFAULT_FILE_MODE = '644'

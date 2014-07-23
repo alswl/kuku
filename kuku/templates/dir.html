@@ -22,10 +22,10 @@
           <option value=".." data-url="../" data-type="dir">..</option>
           {% end %}
           {% for name, property in dirs.items() %}
-          <option value="{{ name }}" data-url="./{{ name }}/" data-type="dir">{{ name }}/</option>
+          <option value="{{ name }}" data-url="{{ name }}/" data-type="dir">{{ name }}/</option>
           {% end %}
           {% for name, property in files.items() %}
-          <option value="{{ name }}" data-url="./{{ name }}" data-type="file" data-mime="{{ property['mime'] }}">{{ name }}</option>
+          <option value="{{ name }}" data-url="{{ name }}" data-type="file" data-mime="{{ property['mime'] }}">{{ name }}</option>
           {% end %}
         </select>
 
@@ -54,7 +54,9 @@
       var self = $(this).children(':selected');
       if (self.attr('data-type') === 'file' && _.contains(VALIDATED_MIMES, self.attr('data-mime'))) {
         $('#preview').html(
-                        '<img class="img-thumbnail" src="' + self.attr('data-url') + '" alt="' + self.val() + '"/>');
+                        '<img class="img-thumbnail" src="' + self.attr('data-url') + '" alt="' + self.val() + '"/>' +
+                                '<pre>![' + self.val() + '](htpp://upload-log4d.qiniudn.com/' + $('#current_dir').val() + '/' + self.attr('data-url') + ')' + '</pre>'
+        );
       } else {
         $('#preview').html('content type not support preview');
       }

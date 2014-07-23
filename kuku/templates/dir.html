@@ -55,7 +55,7 @@
       if (self.attr('data-type') === 'file' && _.contains(VALIDATED_MIMES, self.attr('data-mime'))) {
         $('#preview').html(
                         '<img class="img-thumbnail" src="' + self.attr('data-url') + '" alt="' + self.val() + '"/>' +
-                                '<pre>![' + self.val() + '](htpp://upload-log4d.qiniudn.com/' + $('#current_dir').val() + '/' + self.attr('data-url') + ')' + '</pre>'
+                                '<pre>![' + self.val() + '](http://upload-log4d.qiniudn.com/' + $('#current_dir').val() + '/' + self.attr('data-url') + ')' + '</pre>'
         );
       } else {
         $('#preview').html('content type not support preview');

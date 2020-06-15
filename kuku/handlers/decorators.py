@@ -15,8 +15,8 @@ def require_basic_auth(func):
             handler._transforms = []
             handler.finish()
             return
-        auth_decoded = base64.decodestring(auth_header[6:])
-        username, password = auth_decoded.split(':', 2)
+        auth_decoded = base64.decodebytes((auth_header[6:]).encode('UTF-8'))
+        username, password = auth_decoded.decode('UTF-8').split(':', 2)
         if (username, password) not in settings.ACCOUNTS:
             handler.set_status(403)
             handler.write('403')

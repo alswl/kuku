@@ -4,7 +4,7 @@ import os
 import shutil
 
 import config
-import lib
+from . import lib
 
 class Page(object):
 

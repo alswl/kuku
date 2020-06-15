@@ -1,10 +1,10 @@
-#kuku#
+# kuku
 
 Online Image Manager based on web.py, a weekend project.
 
-#Install#
+## Install
 
-## uwsgi ##
+### uWSGI
 
 ```
 [uwsgi]
@@ -21,7 +21,7 @@ limit-as = 256
 harakiri = 60
 ```
 
-## nginx ##
+### nginx
 
 ```
 server {

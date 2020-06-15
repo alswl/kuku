@@ -11,7 +11,7 @@ from kuku.handlers import dir, api
 from kuku import settings
 
 
-re_safe_name_with_slash = ur'[ \w\u2e80-\u9fff\-_\.,%/]'
+re_safe_name_with_slash = r'[ \w\u2e80-\u9fff\-_\.,%/]'
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -34,13 +34,13 @@ application = tornado.web.Application(route, template_path=settings.TEMPLATE_PAT
 
 
 if __name__ == "__main__":
-    print """Kuku Start Work!
+    print("""Kuku Start Work!
  _   __      _   __
 | | / /     | | / /
 | |/ / _   _| |/ / _   _
 |    \| | | |    \| | | |
 | |\  \ |_| | |\  \ |_| |
 \_| \_/\__,_\_| \_/\__,_|
-    """
+    """)
     application.listen(settings.PORT, settings.ADDRESS)
     tornado.ioloop.IOLoop.instance().start()

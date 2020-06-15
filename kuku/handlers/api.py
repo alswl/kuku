@@ -45,7 +45,7 @@ class MkdirHandler(tornado.web.RequestHandler):
 
         try:
             do_mkdir(path)
-        except ValueError, e:
+        except ValueError as e:
             self.set_status(403)
             self.write(e.message)
             return
@@ -67,7 +67,7 @@ class DeleteHandler(tornado.web.RequestHandler):
 
         try:
             do_delete(path)
-        except ValueError, e:
+        except ValueError as e:
             self.set_status(403)
             self.write(e.message)
             return

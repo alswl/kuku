@@ -86,3 +86,5 @@ com_crashlytics_export_strings.xml
 upload/*
 logs/*
 kuku/settings.py
+.venv
+.venv
